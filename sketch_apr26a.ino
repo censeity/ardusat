@@ -15,13 +15,26 @@ void setup() {
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
     serialConnection.begin(9600);
   accel.begin();
+ArdusatSerial serialConnection(SERIAL_MODE_HARDWARE_AND_SOFTWARE, 8, 9);
 
-  serialConnection.println("SAFE");
+Acceleration accel;
+
+void setup(void)
+{
+  serialConnection.begin(9600);
+
+  accel.begin();
+
+  serialConnection.println("");
 }
 
-void loop() {
-  accel.read();
-  sensorReading = round(sqrt(sq(accel.x)+sq(accel.y)+sq(accel.z)));
+void loop(void)
+{
+  
+  serialConnection.println(accel.readToJSON("accelerometer"));
+
+  delay(100);
+}
 
   delay(10);
   // Clear the OLED screen
